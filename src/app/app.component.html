@@ -3,7 +3,7 @@
     <div class="col-10">
       <ul id="messages">
         <li *ngIf="enteredChat" class="text-center text-bg-success"> {{currentUsername}} have entered chat! </li>
-        <li *ngFor="let msg of msgHistory">{{msg}}</li>
+        <li *ngFor="let msgLog of msgHistory"><h6>{{msgLog?.chatUser}}</h6>{{msgLog?.logMsg}}</li>
       </ul>
     </div>
   </div>

@@ -19,7 +19,7 @@ export class AppComponent implements OnInit{
 
   serverUrl: string = 'http://localhost:3000';
 
-  msgHistory: string[] = [];
+  msgHistory: any[] = [];
 
   enteredChat: boolean;
 
@@ -39,8 +39,9 @@ export class AppComponent implements OnInit{
     })
 
     this.socket.on('chat message', (msg) => {
-      this.msgHistory.push(msg);
-      console.log(this.msgHistory);
+      let jsonMsg = JSON.parse(msg);
+      this.msgHistory.push(jsonMsg);
+      console.log(this.msgHistory, 'message history');
     });
 
     this.socket.on('connect', () => {
@@ -56,11 +57,16 @@ export class AppComponent implements OnInit{
   }   
 
   sendText() {
-    let logMsg = this.textForm.get('textField')?.value;
-    console.log(logMsg, 'log msg');
+    let chatPayload = {
+      logMsg: this.textForm.get('textField')?.value,
+      chatUser: this.currentUsername
+    }
+    // let logMsg = this.textForm.get('textField')?.value;
+    console.log(chatPayload, 'log chat payload');
+    let stringChatPayload = JSON.stringify(chatPayload);
 
-    if(logMsg) {
-      this.socket.emit('chat message', logMsg);
+    if(chatPayload) {
+      this.socket.emit('chat message', stringChatPayload);
       this.textForm.get('textField')?.setValue('');
     }
     
