@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ChatService } from './services/chat/chat.service';
 import { io, Socket } from 'socket.io-client';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UserService } from './services/user/user.service';
 
 @Component({
   selector: 'app-root',
@@ -14,6 +14,9 @@ export class AppComponent implements OnInit{
 
   socket: Socket;
 
+  userStoreData: any;
+  currentUsername: string;
+
   serverUrl: string = 'http://localhost:3000';
 
   msgHistory: string[] = [];
@@ -21,12 +24,13 @@ export class AppComponent implements OnInit{
   enteredChat: boolean;
 
   constructor(
-    private chatService: ChatService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private userService: UserService
   ) {
     this.textForm = new FormGroup({})
     this.socket = io(this.serverUrl);
     this.enteredChat = false;
+    this.currentUsername = '';
   }
 
   ngOnInit(): void {
@@ -41,8 +45,15 @@ export class AppComponent implements OnInit{
 
     this.socket.on('connect', () => {
       this.enteredChat = true;
+      this.userService.setInitialUsername();
+      this.userStoreData = localStorage.getItem('userData');
+      this.currentUsername = JSON.parse(this.userStoreData)?.username;
+      console.log(this.currentUsername, 'this.currentUsername');
+      
+      console.log(this.userStoreData, 'user store data');
+      
     });
-  }
+  }   
 
   sendText() {
     let logMsg = this.textForm.get('textField')?.value;

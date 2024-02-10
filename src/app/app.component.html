@@ -2,7 +2,7 @@
   <div class="row d-flex justify-content-center">
     <div class="col-10">
       <ul id="messages">
-        <li *ngIf="enteredChat" class="text-center text-bg-success"> You have entered chat! </li>
+        <li *ngIf="enteredChat" class="text-center text-bg-success"> {{currentUsername}} have entered chat! </li>
         <li *ngFor="let msg of msgHistory">{{msg}}</li>
       </ul>
     </div>
