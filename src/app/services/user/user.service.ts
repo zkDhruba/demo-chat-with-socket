@@ -24,4 +24,5 @@ export class UserService {
       this.store.dispatch(setUsername({ payload: userData }));
     }
   }
+  
 }

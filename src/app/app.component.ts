@@ -54,6 +54,11 @@ export class AppComponent implements OnInit{
       console.log(this.userStoreData, 'user store data');
       
     });
+
+    this.socket.on('disconnect chat', () => {
+      alert('chat disconnected')
+      localStorage.clear();
+    })
   }   
 
   sendText() {
